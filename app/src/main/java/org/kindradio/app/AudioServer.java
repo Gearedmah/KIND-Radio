@@ -15,7 +15,7 @@ class AudioServer {
  }
  void stop(){try{if(server!=null)server.close();}catch(IOException ignored){} pool.shutdownNow();}
  private void serve(Socket s){
-  try(s){s.setSoTimeout(15000); BufferedReader r=new BufferedReader(new InputStreamReader(s.getInputStream()));
+  try(java.net.Socket socket = s){s.setSoTimeout(15000); BufferedReader r=new BufferedReader(new InputStreamReader(s.getInputStream()));
    String request=r.readLine();if(request==null)return;String line;while((line=r.readLine())!=null&&!line.isEmpty()){}
    OutputStream out=s.getOutputStream();Uri selected=song;
    if(selected==null||!request.startsWith("GET /audio")){out.write("HTTP/1.1 404 Not Found\r\nContent-Length: 0\r\nConnection: close\r\n\r\n".getBytes());return;}
